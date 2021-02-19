@@ -36,8 +36,6 @@ class Update {
 
 public class StorageManager {
 
-
-
     /*
     Base version of the manager. The database is split into different atoms, corresponding to the different
     atom types defined by the user. An empty file (minus the version) means there are no atoms. Each atom consists of
@@ -153,6 +151,48 @@ public class StorageManager {
         // Adding the update to the queue
         updates.add(new Update(new Atom(name.toUpperCase(Locale.ROOT))));
         return true;
+    }
+
+    /**
+     * Adds the specified item to the specified atom. This method automatically updates the database, such as to avoid
+     * calling {@link StorageManager#getRegion(String)} and {@link StorageManager#replaceRegion(Atom)} for a single
+     * item update. For bulk editing items, the previous method is still recommended.
+     * @return {@code true} if the region didn't contain the specified {@link Key} and was added succesfully,
+     * {@code false} otherwise
+     */
+    public boolean addToRegion(String regionName, Key key, Collection<String> data) {
+        Atom a = regions.get(regionName);
+        boolean ret = a.addItem(key, data);
+        if (ret) updates.add(new Update(a));
+        return ret;
+    }
+
+    /**
+     * Removes the specified item to the specified atom. This method automatically updates the database, such as to
+     * avoid calling {@link StorageManager#getRegion(String)} and {@link StorageManager#replaceRegion(Atom)} for a
+     * single item update. For bulk editing items, the previous method is still recommended.
+     * @return {@code true} if the region contained the specified {@link Key} and was removed succesfully,
+     * {@code false} otherwise
+     */
+    public boolean removeFromRegion(String regionName, Key key) {
+        Atom a = regions.get(regionName);
+        boolean ret = a.removeItem(key);
+        if (ret) updates.add(new Update(a));
+        return ret;
+    }
+
+    /**
+     * Replaces the specified item to the specified atom. This method automatically updates the database, such as to
+     * avoid calling {@link StorageManager#getRegion(String)} and {@link StorageManager#replaceRegion(Atom)} for a
+     * single item update. For bulk editing items, the previous method is still recommended.
+     * @return {@code true} if the region contained the specified {@link Key} and was replaced succesfully,
+     * {@code false} otherwise
+     */
+    public boolean replaceInRegion(String regionName, Key key, Collection<String> data) {
+        Atom a = regions.get(regionName);
+        boolean ret = a.replaceItem(key, data);
+        if (ret) updates.add(new Update(a));
+        return ret;
     }
 
     /**
