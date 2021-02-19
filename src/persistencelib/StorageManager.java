@@ -173,6 +173,9 @@ public class StorageManager {
      * @throws IOException when there are issues reading/writing to the database file.
      */
     public void save() throws IOException {
+        // No changes guard
+        if (updates.isEmpty()) return;
+
         // Making the pertinent changes
         for (Update u : updates)
             if (u.isDelete()) regions.remove(u.getName());
