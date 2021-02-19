@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PersistenceLib:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PersistenceLib_jar</output-path>
+    <root id="archive" name="PersistenceLib.jar">
+      <element id="module-output" name="PersistenceLib" />
+    </root>
+  </artifact>
+</component>
