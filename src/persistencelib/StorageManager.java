@@ -131,7 +131,7 @@ public class StorageManager {
      */
     public boolean replaceRegion(Atom atom) {
         // Guard against nonexistent region
-        if (!regionExists(atom.getName())) return false;
+        if (!hasRegion(atom.getName())) return false;
         // Adding the update to the queue
         return updates.add(new Update(atom));
     }
@@ -147,7 +147,7 @@ public class StorageManager {
      */
     public boolean addRegion(String name) {
         // Guard against existent region
-        if (regionExists(name.toUpperCase(Locale.ROOT))) return false;
+        if (hasRegion(name.toUpperCase(Locale.ROOT))) return false;
         // Guard against illegal characters
         if (name.matches(".*[^a-zA-Z0-9\\-_?!].*")) return false;
         // Adding the update to the queue
@@ -162,7 +162,7 @@ public class StorageManager {
      */
     public boolean removeRegion(String regionName) {
         // Guard against nonexistent region
-        if (!regionExists(regionName)) return false;
+        if (!hasRegion(regionName)) return false;
         // Adding the update to the queue
         updates.add(new Update(regionName));
         return true;
@@ -252,7 +252,7 @@ public class StorageManager {
      * @param name The {@link Atom}'s name
      * @return {@code true} if an atom with the given name exists on the database, {@code false} otherwise
      */
-    private boolean regionExists(String name) {
+    public boolean hasRegion(String name) {
         boolean regionExists = regions.containsKey(name);
         ListIterator<Update> li = updates.listIterator(updates.size());
 
